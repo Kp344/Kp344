@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baguette Clicker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #282a2b; /* Change this to the color of your choice */
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #baguette-container {
+            margin-top: 100px;
+            position: relative; /* Set the position to relative */
+        }
+
+        #baguette {
+            width: 200px;
+            cursor: pointer;
+            transition: transform 0.2s; /* Added transform transition */
+        }
+
+        #baguette:hover {
+            transform: scale(1.1);
+            transition: transform 0.2s; /* Added transform transition on hover */
+        }
+
+        #click-counter {
+            font-size: 24px;
+            color: #fff;
+        }
+
+        .flying-baguette {
+            position: absolute;
+            animation: flyAndSpin 2s linear forwards;
+            width: 100px; /* Make the flying baguette smaller */
+        }
+
+        @keyframes flyAndSpin {
+            0% {
+                transform: translate(0, 270px) rotate(0); /* Start from the bottom */
+            }
+            100% {
+                transform: translate(0, -200px) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="baguette-container">
+        <img id="baguette" src="baguette.png" alt="baguette Image">
+        <p id="click-counter">Click Count: <span id="clicks">0</span></p>
+    </div>
+    <script>
+        const baguetteContainer = document.getElementById("baguette-container");
+        const baguette = document.getElementById("baguette");
+        const clickCounter = document.getElementById("clicks");
+        let clickCount = 0;
+
+        baguette.addEventListener("click", () => {
+            clickCount++;
+            clickCounter.textContent = clickCount;
+
+            // Create a new flying baguette
+            const flyingbaguette = document.createElement("img");
+            flyingbaguette.src = "baguette.png";
+            flyingbaguette.alt = "Flying baguette";
+            flyingbaguette.classList.add("flying-baguette");
+            flyingbaguette.style.left = `${Math.floor(Math.random() * baguetteContainer.clientWidth - 100)}px`; /* Adjusted for smaller baguette */
+
+            // Append the flying baguette to the container
+            baguetteContainer.appendChild(flyingbaguette);
+
+            // Create a new audio element and play it
+            const audio = new Audio("baguette_audio.mp3");
+            audio.play();
+
+            // Remove the flying baguette after the animation
+            flyingbaguette.addEventListener("animationend", () => {
+                baguetteContainer.removeChild(flyingbaguette);
+            });
+        });
+    </script>
+</body>
+</html>
